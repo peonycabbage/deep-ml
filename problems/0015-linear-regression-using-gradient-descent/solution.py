@@ -21,12 +21,11 @@ def linear_regression_gradient_descent(X, y, alpha, iterations) -> torch.Tensor:
     # Your code here: use autograd to compute gradients
     for _ in range(iterations):
         predictions = X_t @ theta
-        loss = 0.5* ((predictions - y_t) ** 2).mean()
+        loss = 0.5 * ((predictions  - y_t) **2).mean()
         loss.backward()
 
         with torch.no_grad():
-            theta -= alpha * theta.grad
-
+            theta -=alpha * theta.grad
         theta.grad.zero_()
 
-    return torch.round(theta.detach().reshape(-1)*10000) / 10000
+    return theta.detach().reshape(-1)
