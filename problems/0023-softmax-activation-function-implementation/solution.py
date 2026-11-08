@@ -10,5 +10,7 @@ def softmax(scores: list[float]) -> list[float]:
       - list of floats representing the softmax probabilities.
     """
     # Your implementation here
-    scores = torch.tensor(scores, dtype=torch.float32)
-    return F.softmax(scores, dim=0).tolist()
+    logits = torch.as_tensor(scores, dtype=torch.float32)
+    probs = F.softmax(logits, dim=0)
+
+    return probs.tolist()
