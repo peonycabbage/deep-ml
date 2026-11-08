@@ -19,38 +19,37 @@ def gradient_descent(X: torch.Tensor, y: torch.Tensor, weights: torch.Tensor,
     Returns:
         Optimized weights as a tensor
     """
+    # Your implementation here
     theta = weights.clone().detach().requires_grad_(True)
-    for epoch in range(n_epochs):
-        if method == "batch":
+    for _ in range(n_epochs):
+        if method == 'batch':
             y_hat = X @ theta
             error = y_hat - y
-            loss = torch.mean(error ** 2) 
+            loss = torch.mean(error ** 2)
+            
             loss.backward()
-
             with torch.no_grad():
                 theta -= learning_rate * theta.grad
             theta.grad.zero_()
 
-        elif method == "mini_batch":
-            for i in range(0, len(X), batch_size):
-                y_hat = X[i:i+batch_size] @ theta
-                error = y_hat - y[i:i+batch_size]
-                loss = torch.mean(error ** 2) 
+        elif method == 'stochastic':
+            for i in range(len(X)):
+                y_hat = X[i] @ theta
+                error = y_hat - y[i]
+                loss = error ** 2
                 loss.backward()
 
                 with torch.no_grad():
                     theta -= learning_rate * theta.grad
                 theta.grad.zero_()
-
-        elif method == "stochastic":
-            for i in range(len(X)):
-                y_hat = X[i] @ theta
-                error = y_hat - y[i]
-                loss = torch.mean(error ** 2) 
+        elif method == 'mini_batch':
+            for i in range(0, len(X), batch_size):
+                y_hat = X[i:i+batch_size] @ theta
+                error = y_hat - y[i:i+batch_size]
+                loss = torch.mean(error ** 2)
                 loss.backward()
 
                 with torch.no_grad():
                     theta -= learning_rate * theta.grad
                 theta.grad.zero_()
     return theta.flatten().detach()
-
