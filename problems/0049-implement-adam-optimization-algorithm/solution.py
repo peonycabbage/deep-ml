@@ -17,18 +17,12 @@ def adam_optimizer(f, grad, x0, learning_rate=0.001, beta1=0.9, beta2=0.999, eps
     Returns:
         torch.Tensor: Optimized parameters
     """
-    # Your code here
-    x = x0.detach().clone().requires_grad_(True)
+    params = x0.clone().detach().requires_grad_(True)
+    optimizer = torch.optim.Adam([params], lr=learning_rate, betas=(beta1, beta2), eps=epsilon)
 
-    optimizer = torch.optim.Adam([x], lr=learning_rate, betas=(beta1, beta2), eps=epsilon)
-
-    for i in range(num_iterations):
+    for _ in range(num_iterations):
         optimizer.zero_grad()
-
-        loss = f(x)
+        loss = f(params)
         loss.backward()
-
         optimizer.step()
-    
-    return x.detach()
-
+    return params.detach()

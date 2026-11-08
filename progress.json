@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-08T18:39:24.873Z",
+  "generated_at": "2026-11-08T20:38:07.438Z",
   "items": {
     "problem:1": {
       "kind": "problem",
@@ -192,9 +192,9 @@
       "url": "https://www.deep-ml.com/problems/49",
       "path": "problems/0049-implement-adam-optimization-algorithm",
       "first_solved_at": "2026-10-27T21:38:40.304Z",
-      "last_pushed_at": "2026-10-27T21:38:40.304Z",
+      "last_pushed_at": "2026-11-08T20:38:06.941Z",
       "language": "python",
-      "lines": 35
+      "lines": 29
     },
     "problem:23": {
       "kind": "problem",
