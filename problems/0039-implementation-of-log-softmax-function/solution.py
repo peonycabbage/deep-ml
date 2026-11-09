@@ -10,6 +10,6 @@ def log_softmax(scores: List[float]) -> torch.Tensor:
         torch.Tensor of log-softmax values
     """
     # Your code here
-    scores = torch.as_tensor(scores, dtype=torch.float32)
-    return torch.log_softmax(scores, dim=0)
-    
+    logits = torch.as_tensor(scores, dtype=torch.float32)
+    m = torch.nn.LogSoftmax(dim=0)
+    return m(logits)
