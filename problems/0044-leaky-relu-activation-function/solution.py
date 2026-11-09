@@ -12,7 +12,6 @@ def leaky_relu(z: torch.Tensor, alpha: float = 0.01) -> torch.Tensor:
         Output tensor after applying Leaky ReLU
     """
     # Your implementation here
-    activation = torch.nn.LeakyReLU(alpha)
-
-    return activation(z)
-
+    x = torch.as_tensor(z, dtype=torch.float32)
+    m = torch.nn.LeakyReLU(alpha)
+    return m(x)
