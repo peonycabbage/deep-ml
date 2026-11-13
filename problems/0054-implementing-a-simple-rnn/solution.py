@@ -16,14 +16,14 @@ def rnn_forward(input_sequence: list, initial_hidden_state: list, Wx: list, Wh: 
                       rounded to four decimal places.
     """
     input_sequence = torch.as_tensor(input_sequence, dtype=torch.float32)
-    ht = torch.as_tensor(initial_hidden_state, dtype=torch.float32)
-    Wx = torch.as_tensor(Wx, dtype=torch.float32)
-    Wh = torch.as_tensor(Wh, dtype=torch.float32)
-    b = torch.as_tensor(b, dtype=torch.float32)
+    hidden_state = torch.as_tensor(initial_hidden_state, dtype=torch.float32)
+    weight_ih = torch.as_tensor(Wx, dtype=torch.float32)
+    weight_hh = torch.as_tensor(Wh, dtype=torch.float32)
+    bias = torch.as_tensor(b, dtype=torch.float32)
 
-
-    for x in input_sequence:
-
-        ht = torch.matmul(Wx, x) + torch.matmul(Wh, ht) + b
-        ht = torch.tanh(ht)
-    return torch.round(ht, decimals=4)
+    for input_t in input_sequence:
+        input_projection = torch.matmul(weight_ih, input_t)
+        hidden_projection = torch.matmul(weight_hh, hidden_state) 
+        hidden_state = torch.tanh(input_projection + hidden_projection + bias)
+    return torch.round(hidden_state, decimals=4)
+ 
