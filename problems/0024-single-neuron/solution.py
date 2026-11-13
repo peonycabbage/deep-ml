@@ -23,8 +23,8 @@ def single_neuron_model(features: list[list[float]], labels: list[int], weights:
     weights = torch.as_tensor(weights, dtype=torch.float32)
     bias = torch.as_tensor(bias, dtype=torch.float32)
 
-    pred = torch.matmul(features, weights) + bias
-    out = torch.sigmoid(pred)
-    loss = F.mse_loss(out, labels)
+    output = torch.matmul(features, weights) + bias
+    pred = torch.sigmoid(output)
+    loss = F.mse_loss(pred, labels)
 
-    return [round(v, 4) for v in out.tolist()], round(loss.item(), 4)
+    return([round(v,4) for v in pred.tolist()], round(loss.item(),4))
