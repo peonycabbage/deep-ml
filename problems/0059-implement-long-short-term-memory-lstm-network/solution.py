@@ -31,27 +31,24 @@ class LSTM:
             h: Final hidden state tensor
             c: Final cell state tensor
         """
+        combined_tensor = 0
+        c_t = initial_cell_state
+        h_t = initial_hidden_state
         outputs = []
         for x_t in x:
-            #reshape input to column vector
-            x_t = x_t.reshape(-1, 1)
-            #concatenate previous hidden state and current input
-            gate_input = torch.cat((initial_hidden_state, x_t),dim=0)
-            #forget gate
-            f_t = torch.sigmoid(self.Wf @ gate_input + self.bf)
-            #input gate
-            i_t = torch.sigmoid(self.Wi @ gate_input + self.bi)
-            #candidate cell state
-            c_candidate = torch.tanh(self.Wc @ gate_input + self.bc)
-            #update cell state
-            initial_cell_state = f_t * initial_cell_state + i_t * c_candidate
-            #output gate
-            o_t = torch.sigmoid(self.Wo @ gate_input + self.bo)
-            #update hidden state
-            initial_hidden_state = o_t * torch.tanh(initial_cell_state)
-            outputs.append(initial_hidden_state)
-        
-        outputs = torch.stack(outputs, dim=0)
+            x_t = x_t.reshape(-1,1)
+            combined_tensor = torch.cat((h_t, x_t), dim=0)
+            f_t = torch.sigmoid(torch.matmul(self.Wf, combined_tensor) + self.bf)
+            i_t =  torch.sigmoid(torch.matmul(self.Wi, combined_tensor)+self.bi)
+            candidate_ct = torch.tanh(torch.matmul(self.Wc, combined_tensor)+self.bc)
+            c_t = f_t * c_t + i_t * candidate_ct
+            o_t = torch.sigmoid(torch.matmul(self.Wo, combined_tensor)+ self.bo)
+            h_t = o_t * torch.tanh(c_t)
+            outputs.append(h_t.clone())
+        outputs = torch.stack(outputs,dim=0)
+        return outputs, h_t, c_t
 
-        return outputs, initial_hidden_state, initial_cell_state
-        
+
+
+
+
