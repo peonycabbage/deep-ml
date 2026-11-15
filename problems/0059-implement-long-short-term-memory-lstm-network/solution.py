@@ -38,11 +38,11 @@ class LSTM:
         for x_t in x:
             x_t = x_t.reshape(-1,1)
             combined_tensor = torch.cat((h_t, x_t), dim=0)
-            f_t = torch.sigmoid(torch.matmul(self.Wf, combined_tensor) + self.bf)
-            i_t =  torch.sigmoid(torch.matmul(self.Wi, combined_tensor)+self.bi)
-            candidate_ct = torch.tanh(torch.matmul(self.Wc, combined_tensor)+self.bc)
+            f_t = torch.sigmoid(self.Wf @ combined_tensor + self.bf)
+            i_t =  torch.sigmoid(self.Wi @ combined_tensor +self.bi)
+            candidate_ct = torch.tanh(self.Wc @ combined_tensor +self.bc)
             c_t = f_t * c_t + i_t * candidate_ct
-            o_t = torch.sigmoid(torch.matmul(self.Wo, combined_tensor)+ self.bo)
+            o_t = torch.sigmoid(self.Wo @ combined_tensor + self.bo)
             h_t = o_t * torch.tanh(c_t)
             outputs.append(h_t.clone())
         outputs = torch.stack(outputs,dim=0)
