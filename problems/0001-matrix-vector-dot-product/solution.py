@@ -6,12 +6,11 @@ def matrix_dot_vector(a, b) -> torch.Tensor:
     Inputs can be Python lists, NumPy arrays, or torch Tensors.
     Returns a 1-D tensor of length m, or tensor(-1) if dimensions mismatch.
     """
-    a_t = torch.as_tensor(a, dtype=torch.float)
-    b_t = torch.as_tensor(b, dtype=torch.float)
-    # Dimension mismatch check
-    if a_t.size(1) != b_t.size(0):
-        return torch.tensor(-1)
     # Your implementation here
+    a = torch.as_tensor(a, dtype=torch.float32)
+    b = torch.as_tensor(b, dtype=torch.float32)
 
-    return torch.matmul((a_t), b_t)
-    
+    if a.shape[1] != b.shape[0]:
+        return torch.tensor(-1)
+    return a @ b
+
